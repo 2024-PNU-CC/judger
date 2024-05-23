@@ -3,6 +3,8 @@ from .forms import SubmissionForm
 from django.http import HttpResponseRedirect, JsonResponse
 import pika
 import myproject.settings as settings
+import json
+import uuid
 
 def submit_code(request):
     if request.method == 'POST':
@@ -20,7 +22,7 @@ def success(request):
 def redirect_to_submit(request):
     return HttpResponseRedirect('/submit/')
 
-def send_to_rabbitmq(code, language):
+def send_to_rabbitmq(request_id, code, language):
     connection = pika.BlockingConnection(
         pika.ConnectionParameters(host=settings.RABBITMQ_HOST,
             port=5672,
@@ -32,13 +34,15 @@ def send_to_rabbitmq(code, language):
     channel.queue_declare(queue=settings.RABBITMQ_QUEUE_NAME)
 
     message = {
+        'request_id': request_id,
         'code': code,
         'language': language,
     }
     channel.basic_publish(
         exchange='',
         routing_key=settings.RABBITMQ_QUEUE_NAME,
-        body=str(message)
+        # body=str(message)
+        body=json.dumps(message)
     )
     connection.close()
 
@@ -46,14 +50,18 @@ def send_code(request):
     if request.method == 'POST':
         form = SubmissionForm(request.POST)
         if form.is_valid():
-            form.save()
+            # 데이터베이스에 먼저 저장
+            submission = form.save(commit=False)
+            request_id = str(uuid.uuid4())
+            submission.request_id = request_id
+            submission.save()
 
             code = form.cleaned_data['code']
             language = form.cleaned_data['language']
 
-            send_to_rabbitmq(code=code, language=language)
+            send_to_rabbitmq(request_id=request_id, code=code, language=language)
 
             return JsonResponse({'success': True, 'message': '코드가 성공적으로 제출되었습니다!'})
     else:
         form = SubmissionForm()
-    return render(request, 'submit_code.html', {'form': form})
+    return render(request, 'submissions/submit_code.html', {'form': form})
