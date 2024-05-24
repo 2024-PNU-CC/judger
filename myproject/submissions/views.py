@@ -74,6 +74,6 @@ def get_result_by_request_id(request, request_id):
             'request_id': result.request_id,
             'result': result.result,
         }
-        return render(request, 'submissions/submit_code.html', data)
+        return JsonResponse(data=data)
     except CodeResult.DoesNotExist:
         return JsonResponse({"error": "Result not found"}, status=404)
