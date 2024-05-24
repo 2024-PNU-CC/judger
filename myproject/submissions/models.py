@@ -13,3 +13,10 @@ class Submission(models.Model):
 
     def __str__(self):
         return self.language
+    
+class CodeResult(models.Model):
+    request_id = models.CharField(max_length=100)
+    result = models.TextField()
+
+    def __str__(self):
+        return self.request_id

@@ -5,6 +5,7 @@ import pika
 import myproject.settings as settings
 import json
 import uuid
+from .models import CodeResult
 
 def submit_code(request):
     if request.method == 'POST':
@@ -65,3 +66,14 @@ def send_code(request):
     else:
         form = SubmissionForm()
     return render(request, 'submissions/submit_code.html', {'form': form})
+
+def get_result_by_request_id(request, request_id):
+    try:
+        result = CodeResult.objects.get(request_id=request_id)
+        data = {
+            'request_id': result.request_id,
+            'result': result.result,
+        }
+        return render(request, 'submissions/submit_code.html', data)
+    except CodeResult.DoesNotExist:
+        return JsonResponse({"error": "Result not found"}, status=404)
