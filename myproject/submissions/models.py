@@ -8,7 +8,8 @@ class Submission(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.request_id:
-            self.request_id = uuid.uuid4().hex
+            self.request_id = str(uuid.uuid4())
+            # self.request_id = '2'
         super().save(*args, **kwargs)
 
     def __str__(self):

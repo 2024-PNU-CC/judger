@@ -6,19 +6,53 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+            var request_id = '{{ request_id|default:"" }}';
+            
+            function checkResult() {
+                if (request_id) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/result/' + request_id,
+                        success: function(response) {
+                            if (response.result) {
+                                $('#real_result').html(response.result);
+                                clearInterval(interval); // Stop checking once the result is found
+                            }
+                        },
+                        error: function(response) {
+                            if (response.responseJSON.error === 'Result not found') {
+                                console.log('Result not ready yet, retrying...');
+                                $('#real_result').html('Result not ready yet, retrying...');
+                            } else {
+                                alert('Error: ' + response.responseJSON.error);
+                                clearInterval(interval); // Stop checking on error
+                            }
+                        }
+                    });
+                }
+            }
+
             $('form').on('submit', function(event) {
                 event.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: 'send_code/', // Update this URL to where your server-side script lives
+                    url: 'send_code/',
                     data: $(this).serialize(),
                     success: function(response) {
-                        alert(response.message);
-                        //$('#result').html(response); // Display the results in the result section
-                        //$('form')[0].reset();
+                        if (response.success) {
+                            alert(response.message);
+                            request_id = response.request_id;
+                            interval = setInterval(checkResult, 1000); // Start checking every 5 seconds
+                        } else {
+                            alert('Submission failed. Please try again.');
+                        }
                     }
                 });
             });
+
+            if (request_id) {
+                interval = setInterval(checkResult, 1000); // Start checking every 1 seconds if request_id is present
+            }
         });
     </script>
     <style>
@@ -31,7 +65,7 @@
             padding: 20px;
         }
         form, #result {
-            flex: 1; /* Each child will take up equal space */
+            flex: 1;
             background: white;
             padding: 20px;
             margin: 10px;
@@ -53,7 +87,7 @@
             box-sizing: border-box;
         }
         #id_code {
-            height: 300px; /* Adjust if necessary for better layout */
+            height: 300px;
         }
         button {
             background-color: #5c67f2;
@@ -91,7 +125,7 @@
             <button type="submit">제출</button>
         </form>
         <div id="result">결과:
-            <!-- Results will be displayed here -->
+            <div id="real_result"></div>
         </div>
     </div>
 </body>
