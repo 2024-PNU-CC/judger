@@ -40,8 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'submissions',
-    # 'django_celery_beat',
-    # 'django_celery_results',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -127,16 +127,35 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Celery
-# CELERY_ALWAYS_EAGER = True
-# CELERY_BROKER_URL = 'redis://119.69.22.170:5672'
-# CELERY_RESULT_BACKEND = 'redis://119.69.22.170:5672'
-# CELERY_ACCEPT_CONTENT = ['application/json']
-# CELERY_TASK_SPECIALIZER = 'json'
-# CELERY_RESULT_SPECIALIZER = 'json'
-# CELERY_TIMEZONE = 'Asia/Seoul'
-
 # RabbitMQ
 # RABBITMQ_HOST = 'localhost'
 RABBITMQ_HOST = '119.69.22.170'
 RABBITMQ_QUEUE_NAME = 'code_queue'
+
+# CORS
+CORS_ALLOW_ALL_ORIGIN = True
+
+# CORS_ALLOWED_ORIGINS = [
+    
+# ]
+
+# CORS_ALLOW_METHODS = [
+#     "DELETE",
+#     "GET",
+#     "OPTIONS",
+#     "PATCH",
+#     "POST",
+#     "PUT",
+# ]
+
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
