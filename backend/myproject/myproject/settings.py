@@ -158,3 +158,6 @@ CORS_ALLOW_ALL_ORIGIN = True
 #     "x-csrftoken",
 #     "x-requested-with",
 # ]
+
+CSRF_TRUSTED_ORIGINS = ['https://cc.fiene.dev']
+
