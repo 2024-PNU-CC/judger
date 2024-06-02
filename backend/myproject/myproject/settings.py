@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import my_settings
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-f0o1y-vwy#)=8!*cl1$d$f%g_kos0ly5ichn4okih$69#me_pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cc.fiene.dev']
+ALLOWED_HOSTS = ['cc.fiene.dev', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'submissions',
     'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -119,7 +121,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -132,24 +137,19 @@ RABBITMQ_HOST = '119.69.22.170'
 RABBITMQ_QUEUE_NAME = 'code_queue'
 
 # CORS
-#CORS_ALLOW_ALL_ORIGIN = True
 CORS_ALLOW_ALL_ORIGIN = False
 
 CORS_ALLOWED_ORIGINS = [
-    "https://fc.fiene.dev",
+    'http://localhost:3000',
+    'https://fc.fiene.dev'
 ]
 
-ACCESS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+]
 
-# CORS_ALLOW_METHODS = [
-#     "DELETE",
-#     "GET",
-#     "OPTIONS",
-#     "PATCH",
-#     "POST",
-#     "PUT",
-# ]
+CORS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOW_HEADERS = [
 #     "accept",
