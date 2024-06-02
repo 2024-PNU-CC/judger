@@ -4,4 +4,4 @@ from .models import Submission
 class SubmissionForm(forms.ModelForm):
     class Meta:
         model = Submission
-        fields = ['code', 'language']
+        fields = ['code', 'language', 'request_id']
