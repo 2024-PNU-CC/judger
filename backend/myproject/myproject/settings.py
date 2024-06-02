@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-f0o1y-vwy#)=8!*cl1$d$f%g_kos0ly5ichn4okih$69#me_pr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cc.fiene.dev']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,7 +51,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -134,9 +134,11 @@ RABBITMQ_QUEUE_NAME = 'code_queue'
 # CORS
 CORS_ALLOW_ALL_ORIGIN = True
 
-# CORS_ALLOWED_ORIGINS = [
-    
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://fc.fiene.dev",
+]
+
+ACCESS_ALLOW_CREDENTIALS = True
 
 # CORS_ALLOW_METHODS = [
 #     "DELETE",
@@ -158,3 +160,4 @@ CORS_ALLOW_ALL_ORIGIN = True
 #     "x-csrftoken",
 #     "x-requested-with",
 # ]
+CSRF_TRUSTED_ORIGINS = ['https://cc.fiene.dev']
