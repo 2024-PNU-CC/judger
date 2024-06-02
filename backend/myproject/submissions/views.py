@@ -41,7 +41,7 @@ def get_result_by_request_id(request, request_id):
 
 @csrf_exempt
 def my_view(request):
-    if request.method == 'POST:
+    if request.method == 'POST':
         data = json.loads(request.body)
 	code = data.get('code', '')
 	id = data.get('id', '')
