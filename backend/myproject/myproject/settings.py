@@ -161,10 +161,6 @@ ACCESS_ALLOW_CREDENTIALS = True
 #     "x-csrftoken",
 #     "x-requested-with",
 # ]
-<<<<<<< HEAD
-CSRF_TRUSTED_ORIGINS = ['https://cc.fiene.dev']
-=======
 
 CSRF_TRUSTED_ORIGINS = ['https://cc.fiene.dev']
 
->>>>>>> 991b45ef15f6755f2e6b5119e5563c277062cc49
