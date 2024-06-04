@@ -16,7 +16,7 @@ class Submission(models.Model):
         return self.language
     
 class CodeResult(models.Model):
-    request_id = models.CharField(max_length=100)
+    request_id = models.CharField(max_length=100, unique=True)
     result = models.TextField()
 
     def __str__(self):
