@@ -100,11 +100,15 @@ func main() {
 			lang_file := "./languages/sample.yaml"
 			switch codeLang {
 			case "python":
-				//lang_file = "./languages/python.yaml"
+				lang_file = "./languages/python.yaml"
 			case "cpp":
-				lang_file = "./languages/sample.yaml"
+				lang_file = "./languages/cpp.yaml"
 			case "c":
-				lang_file = "./languages/sample.yaml"
+				lang_file = "./languages/cpp.yaml"
+			case "rust":
+				lang_file = "./languages/rust.yaml"
+			case "go":
+				lang_file = "./languages/go.yaml"
 			default:
 				fmt.Println("./languages/txt.yaml")
 			}
@@ -198,6 +202,10 @@ func codeExtract(json_msg []byte, path string) (string, string) {
 		express = "cpp"
 	case "c":
 		express = "c"
+	case "rust":
+		express = "rs"
+	case "go":
+		express = "go"
 	default:
 		express = "txt"
 	}
